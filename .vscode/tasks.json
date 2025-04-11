@@ -4,7 +4,8 @@
     {
       "label": "install-api-dependencies",
       "type": "shell",
-      "command": "${workspaceFolder}\\.venv\\Scripts\\pip install -r requirements.txt",
+      "command": "${command:python.interpreterPath}",
+      "args": ["-m", "pip", "install", "-r", "requirements.txt"],
       "options": {
         "cwd": "${workspaceFolder}/src/api"
       },
