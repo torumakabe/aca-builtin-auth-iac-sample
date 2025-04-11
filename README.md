@@ -65,6 +65,10 @@ graph TD
 - Application Insightsはフロントエンド、バックエンドAPIからテレメトリを収集
 - バックエンドAPIのコンテナイメージはAzure Container Registryで管理
 
+## 重要なコード
+
+[ここ](./infra/modules/security/)に組み込み認証関連のBicepファイルがあります。
+
 ## テスト済み環境
 
 - [Azure CLI](https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli): 2.71.0
