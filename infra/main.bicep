@@ -37,7 +37,7 @@ param backendServicePublicNetworkAccess string
 
 // すべてのリソースに適用すべきタグ
 //
-// 注意: 'azd-service-name'タグはサービスホストリソースに個別に適用する必要がある
+// 重要: 'azd-service-name'タグはサービスホストリソースに個別に適用する必要がある
 // 使用例:
 //   tags: union(tags, { 'azd-service-name': <azure.yamlのサービス名> })
 var tags = {
