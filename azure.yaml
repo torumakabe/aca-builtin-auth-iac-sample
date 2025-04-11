@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/alpha/azure.yaml.json
+name: aca-auth-poc
+workflows:
+  up:
+    steps:
+      - azd: provision
+      - azd: package
+      - azd: deploy
+hooks:
+  postprovision:
+    # wait for RBAC settings propagation
+    posix:
+      shell: sh
+      run: sleep 60
+    windows:
+      shell: pwsh
+      run: Start-Sleep 60
+  predown:
+    posix:
+      shell: sh
+      run: |
+        pip install -r ./scripts/requirements.txt
+        python ./scripts/delete_app.py
+      interactive: true
+    windows:
+      shell: pwsh
+      run: |
+        pip install -r ./scripts/requirements.txt
+        python ./scripts/delete_app.py
+      interactive: true
+services:
+  frontend:
+    project: ./src/frontend
+    host: staticwebapp
+    language: ts
+    hooks:
+      prebuild:
+        posix:
+          shell: sh
+          run: |
+            azd env get-values > .env
+            npm ci
+        windows:
+          shell: pwsh
+          run: |
+            azd env get-values > .env
+            npm ci
+      postbuild:
+        posix:
+          shell: sh
+          run: rm .env
+        windows:
+          shell: pwsh
+          run: Remove-Item .env
+  api:
+    project: ./src/api
+    host: containerapp
+    language: docker
+resources:
+  api:
+    type: host.containerapp
+    port: 8080

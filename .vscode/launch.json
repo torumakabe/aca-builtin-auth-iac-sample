@@ -1,0 +1,45 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "[API] Python Debugger: FastAPI",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "uvicorn",
+      "args": ["main:app", "--reload", "--port", "8080"],
+      "jinja": true,
+      "cwd": "${workspaceFolder}/src/api",
+      "envFile": "${input:dotEnvFilePath}",
+      "env": {
+        "APPLICATIONINSIGHTS_CONNECTION_STRING": ""
+      },
+      "preLaunchTask": "install-api-dependencies",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "[Frontend] Debug Next.js",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/src/frontend",
+      "envFile": "${input:dotEnvFilePath}",
+      "env": {
+        "NEXT_PUBLIC_CHAT_API_URL": "http://localhost:8080/api/chat",
+        "NEXT_PUBLIC_APPLICATIONINSIGHTS_CONNECTION_STRING": ""
+      },
+      "preLaunchTask": "install-frontend-dependencies",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "dotEnvFilePath",
+      "type": "command",
+      "command": "azure-dev.commands.getDotEnvFilePath"
+    }
+  ]
+}

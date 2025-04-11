@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var (--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 2.25rem; /* text-4xl */
+  font-weight: bold;
+}
+
+/* 入力コンテナのスタイル */
+.input-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* コンテナのスタイル */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  padding: 0 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* チャットボックスのスタイル */
+.chat-box {
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* タイトルのスタイル */
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* チャットコンテナのスタイル */
+.chat-container {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 10px;
+}
+
+/* メッセージのスタイル */
+.message {
+  margin-bottom: 10px;
+}
+
+.message.user {
+  text-align: right;
+}
+
+.message.bot {
+  text-align: left;
+}
+
+/* メッセージテキストのスタイル */
+.message-text {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.message.user .message-text {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* 入力フィールドのスタイル */
+.input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  background-color: var(--background);
+  color: #000;
+}
+
+/* 送信ボタンのスタイル */
+.send-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.send-button:hover {
+  background-color: #0056b3;
+}
+
+/* ローディング表示のスタイル */
+.loading {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* アクセシビリティ対応のスタイル */
+@media (forced-colors: active) {
+  body {
+    background-color: Window;
+    color: WindowText;
+  }
+
+  .message-text {
+    background-color: Highlight;
+    color: HighlightText;
+  }
+
+  .send-button {
+    background-color: ButtonFace;
+    color: ButtonText;
+  }
+}
+
+.login-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #0078d4;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.login-button:hover {
+  background-color: #005a9e;
+}
+
+.login-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.login-status-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: #f0f8ff;
+  border-radius: 0.5rem;
+}
+
+.login-status {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #ff5252;
+}
+
+.login-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #43a047;
+}

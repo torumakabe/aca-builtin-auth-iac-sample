@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-azuretools.azure-dev",
+    "ms-azuretools.vscode-bicep",
+    "ms-azuretools.vscode-azurestaticwebapps"
+  ]
+}
