@@ -258,7 +258,7 @@ var apiEnv = map(filter(apiAppSettingsArray, i => i.?secret == null), i => {
   value: i.value
 })
 
-module api 'br/public:avm/res/app/container-app:0.15.0' = {
+module api 'br/public:avm/res/app/container-app:0.16.0' = {
   name: 'api'
   params: {
     name: 'api'
@@ -355,18 +355,37 @@ module api 'br/public:avm/res/app/container-app:0.15.0' = {
         '*'
       ]
     }
+    authConfig: {
+      platform: {
+        enabled: true
+      }
+      globalValidation: {
+        redirectToProvider: 'azureactivedirectory'
+        unauthenticatedClientAction: 'Return401'
+      }
+      identityProviders: {
+        azureActiveDirectory: {
+          enabled: true
+          registration: {
+            clientId: appRegistration.outputs.apiAppId
+            clientSecretSettingName: apiAppSecretSettingName
+            openIdIssuer: issuer
+          }
+          validation: {
+            allowedAudiences: [
+              'api://${appRegistration.outputs.apiAppId}'
+            ]
+            defaultAuthorizationPolicy: {
+              allowedApplications: [
+                appRegistration.outputs.apiAppId
+                appRegistration.outputs.apiClientAppId
+              ]
+            }
+          }
+        }
+      }
+    }
     tags: union(tags, { 'azd-service-name': 'api' })
-  }
-}
-
-module appAuthConfig './modules/security/appauthconfig.bicep' = {
-  name: 'app-auth-config'
-  params: {
-    containerAppName: api.outputs.name
-    apiAppId: appRegistration.outputs.apiAppId
-    apiAppSecretSettingName: apiAppSecretSettingName
-    apiClientAppId: appRegistration.outputs.apiClientAppId
-    issuer: issuer
   }
 }
 
