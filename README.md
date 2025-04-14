@@ -12,6 +12,7 @@ Azure Container AppsやAzure App Serviceには組み込みの認証機能（通�
   - ドキュメントだけでは理解しにくい設定を、動くコードを見て理解を助ける
 - IaCツールはBicepを採用
   - Entra ID アプリケーションの操作にMicrosoft Graph用Bicepを使用（現時点ではプレビュー中のため、情報が少なく貴重）
+  - [Azure Verified Modules](https://azure.github.io/Azure-Verified-Modules/)を活用
 - IaCによる柔軟なカスタマイズ
   - 組み込み認証むけのアプリケーションにシークレットを使わず、マネージドIDとフェデレーションで認証（シークレット管理やローテーションが不要）
 - Azure Developer CLI、VS Codeの活用
@@ -71,7 +72,10 @@ graph TD
 
 ## 重要なコード
 
-[ここ](./infra/modules/security/)に組み込み認証関連のBicepファイルがあります。
+Azure Container Appsのパラメータ [authConfig](https://learn.microsoft.com/ja-jp/azure/templates/microsoft.app/containerapps/authconfigs?pivots=deployment-language-bicep) と、Entra IDの[アプリケーション](https://learn.microsoft.com/en-us/graph/templates/reference/applications?view=graph-bicep-1.0)、[フェデレーションID資格情報](https://learn.microsoft.com/en-us/graph/templates/reference/federatedidentitycredentials?view=graph-bicep-1.0)がポイントです。
+
+- [Azure Container Apps - authConfigパラメータ](https://github.com/torumakabe/aca-builtin-auth-iac-sample/blob/8d05f070c06d41d4b4549d5573a344c98988e6cd/infra/resources.bicep#L358-L387)
+- [Entra ID関連モジュール](./infra/modules/security/appregistration.bicep)
 
 ## テスト済み環境
 
