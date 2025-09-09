@@ -1,0 +1,56 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "FastAPI app for Azure OpenAI chat"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastapi==0.115.12",
+    "uvicorn==0.34.0",
+    "openai==1.72.0",
+    "opentelemetry-api>=1.24,<2",
+    "opentelemetry-sdk>=1.24,<2",
+    "opentelemetry-instrumentation>=0.46,<1",
+    "opentelemetry-instrumentation-httpx>=0.46,<1",
+    "opentelemetry-instrumentation-openai>=0.46,<0.47",
+    "opentelemetry-instrumentation-fastapi>=0.46,<1",
+    "python-dotenv==1.1.0",
+    "azure-identity==1.21.0",
+    "azure-monitor-opentelemetry==1.5.0",
+    "pydantic==2.11.3",
+    "anyio==4.9.0",
+    "asgiref==3.8.1",
+    "azure-core==1.33.0",
+    "azure-core-tracing-opentelemetry==1.0.0b12",
+    "azure-monitor-opentelemetry-exporter==1.0.0b27",
+    "httpcore==1.0.7",
+    "httpx==0.28.1",
+    "opentelemetry-semantic-conventions>=0.46,<1",
+    "opentelemetry-semantic-conventions-ai>=0.4,<1",
+    "starlette==0.46.1",
+]
+
+[tool.uv]
+# Keep a local virtual environment in the project directory when syncing locally
+default-groups = []
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6.3,<1",
+]
+
+[tool.ruff]
+# ターゲット Python バージョン
+target-version = "py313"
+# 行長
+line-length = 100
+# 除外パス
+extend-exclude = ["__pycache__"]
+
+[tool.ruff.lint]
+# 使用するルールセット（E: pycodestyle, F: pyflakes, I: isort, B: flake8-bugbear, UP: pyupgrade）
+select = ["E", "F", "I", "B", "UP"]
+# 必要に応じて無効化
+# E402: importより前に実行が必要なコード（警告抑止）を許容
+# E501: 日本語文字列などで長行になるケースを許容
+ignore = ["E402", "E501"]

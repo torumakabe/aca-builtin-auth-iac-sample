@@ -79,14 +79,18 @@ Azure Container Appsのパラメータ [authConfig](https://learn.microsoft.com/
 
 ## テスト済み環境
 
-- [Azure CLI](https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli): 2.71.0
-- [Azure Developer CLI (azd)](https://learn.microsoft.com/ja-jp/azure/developer/azure-developer-cli/install-azd): 1.14.0
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/): 4.40.0
-- [Node.js](https://nodejs.org/): 23.11.0
-- [Python](https://www.python.org/): 3.12.10
-- [Visual Studio Code](https://code.visualstudio.com/): 1.99.2
+- [Azure CLI](https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli): 2.77.0
+- [Azure Developer CLI (azd)](https://learn.microsoft.com/ja-jp/azure/developer/azure-developer-cli/install-azd): 1.18.2
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/): 28.4.0
+- [Node.js](https://nodejs.org/): 22.14.0
+- [npm](https://docs.npmjs.com/): 11.6.0
+- [uv](https://docs.astral.sh/uv/): 0.7.2
+- [Ruff](https://docs.astral.sh/ruff/): 0.12.12
+- [Visual Studio Code](https://code.visualstudio.com/): 1.103.2
 
 ## Azureへのデプロイ
+
+以下は macOS / Linux / WSL での手順です。
 
 ### 必要な権限
 
@@ -154,27 +158,47 @@ azd down
 
 1. プロジェクトをVS Codeで開きます
 
-2. Pythonインタープリターの選択と仮想環境を作成します
-   - VSCodeの左下のステータスバーをクリックするか、`Ctrl+Shift+P (Windows)` `Cmd+Shift+P (macOS)`でコマンドパレットを開き、`Python: Select Interpreter`を選択します
-   - 既存のPythonインタープリターが表示されるので適切なバージョン（Python 3.12など）を選択します
-   - 仮想環境を新規作成する場合は、コマンドパレットから`Python: Create Environment`を選択します
-     - 環境タイプとして`Venv`を選択します
-     - プロジェクトのルートディレクトリに`.venv`という名前で仮想環境が作成されます
-   - 作成した仮想環境をインタープリターとして選択します
+2. 前提ツールの確認/導入
+   - uv をインストール（未導入の場合）
+     - `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
-3. 依存パッケージをインストールします
-   - pip、npmを適宜実行するか、VS Codeのタスク実行から以下のタスクを実行してください：
-     - `install-api-dependencies` (バックエンドAPI)
-     - `install-frontend-dependencies` (フロントエンド)
+3. Python仮想環境の作成と依存パッケージの同期（uv 管理）
+   - `cd src/api && uv sync`
+   - 初回実行で `src/api/.venv` が作成され、依存がインストールされます
+   - Python 3.13 は uv により自動取得・利用されるため、事前に Python をインストールする必要はありません
+
+4. VS Code の Python インタープリター設定
+   - コマンドパレットで `Python: Select Interpreter` を開き、`src/api/.venv` のインタープリターを選択します
+   - もしくはデバッグ実行時にプロンプトが出たら `.venv` を選択します（`.vscode/launch.json` は選択済みインタープリターを使用します）
+
+5. 依存パッケージの更新
+   - バックエンドAPI: VS Code タスク `install-api-dependencies` は `uv sync` を実行します
+   - フロントエンド: `npm install` またはタスク `install-frontend-dependencies`
 
 ### ローカルでの実行
 
 VS Codeのデバッグ機能を使って、アプリケーションを簡単に実行できます：
 
-- **[API] Python Debugger: FastAPI** - バックエンドAPIを実行する場合
+- **[API] Python Debugger: FastAPI (uv)** - バックエンドAPIを実行する場合（uv 管理の .venv を使用）
 - **[Frontend] Debug Next.js** - フロントエンドを実行する場合
 
 > **補足**: VS Codeのデバッグ構成(launch.json)で、Azure Developer CLIが管理する`.env`ファイルを読み込むよう設定されています。
+
+### Lint / Format（Ruff）
+
+- 依存同期（開発用ツール含む）: `cd src/api && uv sync --extra dev`
+- Lint: `cd src/api && uv run ruff check .`
+- フォーマット: `cd src/api && uv run ruff format .`
+- VS Code タスク: `lint-api`, `format-api`
+
+### Docker ビルド/実行（API）
+
+- マルチステージ Dockerfile を採用しています。
+  - 依存固定化は builder で `uv pip compile pyproject.toml -o requirements.txt`
+  - ランタイムは `python:3.13-slim` で `pip install -r requirements.txt`
+  - 最終イメージには uv は含まれません／実行ユーザーは非root（UID 10001）
+- ビルド: `docker build -t api:multi src/api`
+- 実行: `azd env get-values > .env && docker run --env-file .env -p 8080:8080 api:multi`
 
 ## 設定
 

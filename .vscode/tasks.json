@@ -4,13 +4,41 @@
     {
       "label": "install-api-dependencies",
       "type": "shell",
-      "command": "${command:python.interpreterPath}",
-      "args": ["-m", "pip", "install", "-r", "requirements.txt"],
+      "command": "uv",
+      "args": ["sync", "--extra", "dev"],
       "options": {
         "cwd": "${workspaceFolder}/src/api"
       },
       "presentation": {
         "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "lint-api",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "check", "."],
+      "options": {
+        "cwd": "${workspaceFolder}/src/api"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format-api",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "format", "."],
+      "options": {
+        "cwd": "${workspaceFolder}/src/api"
+      },
+      "presentation": {
+        "reveal": "always",
         "panel": "shared"
       },
       "problemMatcher": []

@@ -5,13 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "[API] Python Debugger: FastAPI",
+      "name": "[API] Python Debugger: FastAPI (uv)",
       "type": "debugpy",
       "request": "launch",
       "module": "uvicorn",
       "args": ["main:app", "--reload", "--port", "8080"],
       "jinja": true,
       "cwd": "${workspaceFolder}/src/api",
+      "python": "${command:python.interpreterPath}",
       "envFile": "${input:dotEnvFilePath}",
       "env": {
         "APPLICATIONINSIGHTS_CONNECTION_STRING": ""

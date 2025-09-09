@@ -3,6 +3,7 @@
     "ms-python.python",
     "ms-azuretools.azure-dev",
     "ms-azuretools.vscode-bicep",
-    "ms-azuretools.vscode-azurestaticwebapps"
+    "ms-azuretools.vscode-azurestaticwebapps",
+    "charliermarsh.ruff"
   ]
 }

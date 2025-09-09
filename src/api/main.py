@@ -9,17 +9,38 @@ Azure OpenAIを使用したシンプルなチャットのためのFastAPIアプ�
     chat(request: ChatRequest) -> ChatResponse: チャットリクエストを処理し、Azure OpenAIモデルからのレスポンスを返すエンドポイント。
 """
 
-import os
 import logging
+import os
+import warnings
+
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from openai import AzureOpenAI
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from pydantic import BaseModel
+
+# azure.monitor の import 前に pkg_resources の非推奨警告を抑制
+warnings.filterwarnings(
+    "ignore",
+    category=UserWarning,
+    message=r"pkg_resources is deprecated as an API.*",
+)
+
+import importlib
+
 from azure.monitor.opentelemetry import configure_azure_monitor
+
+# 不要なエラー/ノイズを避けるため Azure Monitor の自動インストルメント探索を無効化
+try:
+    _am_cfg = importlib.import_module("azure.monitor.opentelemetry._configure")
+    if hasattr(_am_cfg, "_setup_instrumentations"):
+        _am_cfg._setup_instrumentations = lambda *_args, **_kwargs: None  # type: ignore
+except Exception:
+    pass
+
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 # ログ設定
 LOGGER_NAME = "API"
@@ -28,14 +49,41 @@ logger = logging.getLogger(LOGGER_NAME)
 # FastAPIアプリケーションのインスタンス作成
 app = FastAPI()
 
-# Application Insightsの計装
-if os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING"):
-    configure_azure_monitor(
-        logger_name=LOGGER_NAME,
+
+# Application Insightsの計装（有効な接続文字列のみ）
+def _sanitize_appinsights_conn_string() -> str | None:
+    cs = os.environ.get("APPLICATIONINSIGHTS_CONNECTION_STRING")
+    if not cs:
+        return None
+    s = cs.strip()
+    if (s.startswith('"') and s.endswith('"')) or (s.startswith("'") and s.endswith("'")):
+        s = s[1:-1].strip()
+    # 変更があれば環境変数に書き戻す
+    if s != cs:
+        os.environ["APPLICATIONINSIGHTS_CONNECTION_STRING"] = s
+    return s
+
+
+_appinsights_cs = _sanitize_appinsights_conn_string()
+# 未使用でノイズとなる自動インストルメントを既定で無効化（環境変数で上書き可能）
+if "OTEL_PYTHON_DISABLED_INSTRUMENTATIONS" not in os.environ:
+    os.environ["OTEL_PYTHON_DISABLED_INSTRUMENTATIONS"] = (
+        "django,flask,psycopg2,requests,urllib,urllib3"
     )
-    HTTPXClientInstrumentor().instrument()
-    OpenAIInstrumentor().instrument()
-    FastAPIInstrumentor().instrument_app(app)
+
+if _appinsights_cs:
+    try:
+        configure_azure_monitor(
+            logger_name=LOGGER_NAME,
+        )
+        HTTPXClientInstrumentor().instrument()
+        OpenAIInstrumentor().instrument()
+        FastAPIInstrumentor().instrument_app(app)
+        logger.info("Azure Monitor instrumentation enabled.")
+    except Exception as e:
+        logger.warning("Azure Monitor instrumentation disabled: %s", e)
+else:
+    logger.info("Azure Monitor not configured: missing or invalid connection string.")
 
 # ミドルウェアの設定
 app.add_middleware(
@@ -64,7 +112,7 @@ def get_env_variable(name):
     """
     value = os.getenv(name)
     if value is None:
-        raise EnvironmentError(f"Environment variable {name} is not set.")
+        raise OSError(f"Environment variable {name} is not set.")
     return value
 
 
