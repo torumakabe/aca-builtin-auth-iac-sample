@@ -5,7 +5,11 @@
       "label": "install-python-dependencies",
       "type": "shell",
       "command": "uv",
-      "args": ["sync", "--extra", "dev"],
+      "args": [
+        "sync",
+        "--extra",
+        "dev"
+      ],
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -15,12 +19,16 @@
       },
       "problemMatcher": []
     },
-    
     {
       "label": "lint-api",
       "type": "shell",
       "command": "uv",
-      "args": ["run", "ruff", "check", "."],
+      "args": [
+        "run",
+        "ruff",
+        "check",
+        "."
+      ],
       "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/src/api"
@@ -35,7 +43,12 @@
       "label": "format-api",
       "type": "shell",
       "command": "uv",
-      "args": ["run", "ruff", "format", "."],
+      "args": [
+        "run",
+        "ruff",
+        "format",
+        "."
+      ],
       "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/src/api"
@@ -63,7 +76,12 @@
       "label": "lint-scripts",
       "type": "shell",
       "command": "uv",
-      "args": ["run", "ruff", "check", "."],
+      "args": [
+        "run",
+        "ruff",
+        "check",
+        "."
+      ],
       "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/scripts"
@@ -78,7 +96,12 @@
       "label": "format-scripts",
       "type": "shell",
       "command": "uv",
-      "args": ["run", "ruff", "format", "."],
+      "args": [
+        "run",
+        "ruff",
+        "format",
+        "."
+      ],
       "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/scripts"
