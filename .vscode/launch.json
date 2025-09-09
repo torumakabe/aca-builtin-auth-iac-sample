@@ -9,7 +9,12 @@
       "type": "debugpy",
       "request": "launch",
       "module": "uvicorn",
-      "args": ["main:app", "--reload", "--port", "8080"],
+      "args": [
+        "main:app",
+        "--reload",
+        "--port",
+        "8080"
+      ],
       "jinja": true,
       "cwd": "${workspaceFolder}/src/api",
       "python": "${command:python.interpreterPath}",
@@ -25,7 +30,10 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "cwd": "${workspaceFolder}/src/frontend",
       "envFile": "${input:dotEnvFilePath}",
       "env": {
@@ -33,7 +41,7 @@
         "NEXT_PUBLIC_APPLICATIONINSIGHTS_CONNECTION_STRING": ""
       },
       "preLaunchTask": "install-frontend-dependencies",
-      "console": "integratedTerminal"
+      "console": "internalConsole"
     }
   ],
   "inputs": [

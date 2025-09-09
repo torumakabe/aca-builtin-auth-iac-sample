@@ -55,6 +55,48 @@
         "panel": "shared"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "install-scripts-dependencies",
+      "type": "shell",
+      "command": "uv",
+      "args": ["sync", "--extra", "dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/scripts"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "lint-scripts",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "check", "."],
+      "options": {
+        "cwd": "${workspaceFolder}/scripts"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format-scripts",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "format", "."],
+      "options": {
+        "cwd": "${workspaceFolder}/scripts"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
     }
   ]
 }

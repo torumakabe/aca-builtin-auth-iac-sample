@@ -40,18 +40,4 @@ dev = [
     "ruff>=0.6.3,<1",
 ]
 
-[tool.ruff]
-# ターゲット Python バージョン
-target-version = "py313"
-# 行長
-line-length = 100
-# 除外パス
-extend-exclude = ["__pycache__"]
-
-[tool.ruff.lint]
-# 使用するルールセット（E: pycodestyle, F: pyflakes, I: isort, B: flake8-bugbear, UP: pyupgrade）
-select = ["E", "F", "I", "B", "UP"]
-# 必要に応じて無効化
-# E402: importより前に実行が必要なコード（警告抑止）を許容
-# E501: 日本語文字列などで長行になるケースを許容
-ignore = ["E402", "E501"]
+ 

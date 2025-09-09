@@ -19,14 +19,18 @@ hooks:
     posix:
       shell: sh
       run: |
-        pip install -r ./scripts/requirements.txt
-        python ./scripts/delete_app.py
+        # Ensure workspace dependencies for scripts are available
+        uv sync --project ./scripts
+        # Run the cleanup script via uv entrypoint
+        uv run --project ./scripts delete-entra-app
       interactive: true
     windows:
       shell: pwsh
       run: |
-        pip install -r ./scripts/requirements.txt
-        python ./scripts/delete_app.py
+        # Ensure workspace dependencies for scripts are available
+        uv sync --project ./scripts
+        # Run the cleanup script via uv entrypoint
+        uv run --project ./scripts delete-entra-app
       interactive: true
 services:
   frontend:
