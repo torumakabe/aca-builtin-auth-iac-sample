@@ -28,8 +28,6 @@ warnings.filterwarnings(
 
 import importlib
 
-from azure.monitor.opentelemetry import configure_azure_monitor
-
 # 不要なエラー/ノイズを避けるため Azure Monitor の自動インストルメント探索を無効化
 try:
     _am_cfg = importlib.import_module("azure.monitor.opentelemetry._configure")
@@ -73,6 +71,9 @@ if "OTEL_PYTHON_DISABLED_INSTRUMENTATIONS" not in os.environ:
 
 if _appinsights_cs:
     try:
+        # 遅延インポートして、未設定時や依存欠如時の ImportError を回避
+        from azure.monitor.opentelemetry import configure_azure_monitor
+
         configure_azure_monitor(
             logger_name=LOGGER_NAME,
         )
@@ -80,6 +81,11 @@ if _appinsights_cs:
         OpenAIInstrumentor().instrument()
         FastAPIInstrumentor().instrument_app(app)
         logger.info("Azure Monitor instrumentation enabled.")
+    except ModuleNotFoundError as e:
+        logger.warning(
+            "Azure Monitor disabled: %s (hint: add/install 'setuptools')",
+            e,
+        )
     except Exception as e:
         logger.warning("Azure Monitor instrumentation disabled: %s", e)
 else:
