@@ -184,8 +184,6 @@ azd down
 
 4. VS Code の Python インタープリター設定
    - コマンドパレットで `Python: Select Interpreter` を開き、リポジトリ直下の `.venv` を選択します。
-     - Windows: `.venv\\Scripts\\python.exe`
-     - macOS/Linux: `.venv/bin/python`
    - 以後は VS Code が選択を記憶します。デバッグ実行時にプロンプトが出た場合も同じ `.venv` を選択してください（`.vscode/launch.json` は選択済みインタープリターを使用します）。
 
 5. 依存パッケージの更新
