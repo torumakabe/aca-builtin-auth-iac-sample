@@ -5,7 +5,7 @@ description = "FastAPI app for Azure OpenAI chat"
 requires-python = ">=3.13"
 
 dependencies = [
-    "fastapi==0.115.12",
+    "fastapi==0.116.1",
     "uvicorn==0.34.0",
     "openai==1.72.0",
     "setuptools>=70",
@@ -36,8 +36,4 @@ dependencies = [
 default-groups = []
 
 [project.optional-dependencies]
-dev = [
-    "ruff>=0.6.3,<1",
-]
-
- 
+dev = ["ruff>=0.6.3,<1"]
