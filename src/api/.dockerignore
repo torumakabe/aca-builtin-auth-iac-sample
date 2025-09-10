@@ -1,0 +1,41 @@
+# Ignore VCS
+.git
+.git/
+.gitignore
+
+# Python bytecode and build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Tool caches and analysis
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+htmlcov/
+
+# Editors/OS
+.vscode/
+.idea/
+.DS_Store
+
+# Prevent local requirements from shadowing compiled one from deps stage
+requirements*.txt
+

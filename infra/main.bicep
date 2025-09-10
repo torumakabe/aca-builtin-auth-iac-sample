@@ -71,7 +71,6 @@ module resources './resources.bicep' = {
 
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = resources.outputs.AZURE_CONTAINER_REGISTRY_ENDPOINT
 output AZURE_RESOURCE_API_ID string = resources.outputs.AZURE_RESOURCE_API_ID
-output AZURE_RESOURCE_GPT_4O_ID string = resources.outputs.AZURE_RESOURCE_GPT_4O_ID
 output AZURE_RESOURCE_STATIC_WEB_APP_ID string = resources.outputs.AZURE_RESOURCE_STATIC_WEB_APP_ID
 output AZURE_CONTAINER_APPS_API_FQDN string = resources.outputs.AZURE_CONTAINER_APPS_API_FQDN
 output AZURE_OPENAI_ENDPOINT string = resources.outputs.AZURE_OPENAI_ENDPOINT
