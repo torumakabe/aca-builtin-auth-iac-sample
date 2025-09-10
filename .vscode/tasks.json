@@ -2,15 +2,46 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "install-api-dependencies",
+      "label": "install-python-dependencies",
       "type": "shell",
-      "command": "${command:python.interpreterPath}",
-      "args": ["-m", "pip", "install", "-r", "requirements.txt"],
+      "command": "uv",
+      "args": ["sync", "--extra", "dev"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    
+    {
+      "label": "lint-api",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "check", "."],
+      "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/src/api"
       },
       "presentation": {
-        "reveal": "silent",
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format-api",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "format", "."],
+      "dependsOn": "install-python-dependencies",
+      "options": {
+        "cwd": "${workspaceFolder}/src/api"
+      },
+      "presentation": {
+        "reveal": "always",
         "panel": "shared"
       },
       "problemMatcher": []
@@ -24,6 +55,36 @@
       },
       "presentation": {
         "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "lint-scripts",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "check", "."],
+      "dependsOn": "install-python-dependencies",
+      "options": {
+        "cwd": "${workspaceFolder}/scripts"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "format-scripts",
+      "type": "shell",
+      "command": "uv",
+      "args": ["run", "ruff", "format", "."],
+      "dependsOn": "install-python-dependencies",
+      "options": {
+        "cwd": "${workspaceFolder}/scripts"
+      },
+      "presentation": {
+        "reveal": "always",
         "panel": "shared"
       },
       "problemMatcher": []

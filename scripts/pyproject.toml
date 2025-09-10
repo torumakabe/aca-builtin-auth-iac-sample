@@ -1,0 +1,22 @@
+[project]
+name = "scripts"
+version = "0.1.0"
+description = "Utility scripts for azd hooks (Graph cleanup, etc.)"
+requires-python = ">=3.13"
+
+dependencies = [
+    "azure-identity==1.21.0",
+    "requests==2.32.5",
+]
+
+[project.scripts]
+delete-entra-app = "delete_app:main"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6.3,<1",
+]
+
+[tool.uv]
+default-groups = []
+

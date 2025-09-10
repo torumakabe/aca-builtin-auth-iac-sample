@@ -19,14 +19,18 @@ hooks:
     posix:
       shell: sh
       run: |
-        pip install -r ./scripts/requirements.txt
-        python ./scripts/delete_app.py
+        # Ensure workspace dependencies for scripts are available
+        uv sync --extra dev
+        # Run the cleanup script directly with Python to avoid missing entrypoint issues
+        uv run --project ./scripts python scripts/delete_app.py
       interactive: true
     windows:
       shell: pwsh
       run: |
-        pip install -r ./scripts/requirements.txt
-        python ./scripts/delete_app.py
+        # Ensure workspace dependencies for scripts are available
+        uv sync --extra dev
+        # Run the cleanup script directly with Python to avoid missing entrypoint issues
+        uv run --project ./scripts python scripts/delete_app.py
       interactive: true
 services:
   frontend:

@@ -3,16 +3,17 @@ Microsoft Graph APIを使用してEntra IDアプリケーション登録を削�
 Azure Developer CLI (azd)が管理する環境ファイルからアプリケーションIDを抽出し、それをオブジェクトIDに変換して削除処理を行う。
 """
 
+import json
 import os
 import re
-import json
 import subprocess
-from typing import Optional, Dict, Tuple, Any
-from azure.identity import DefaultAzureCredential
+from typing import Any
+
 import requests
+from azure.identity import DefaultAzureCredential
 
 
-def get_azd_env_file_path() -> Optional[str]:
+def get_azd_env_file_path() -> str | None:
     """
     azdコマンドを使用して.envファイルのパスを取得する
 
@@ -51,7 +52,7 @@ def get_azd_env_file_path() -> Optional[str]:
     return None
 
 
-def find_env_file() -> Optional[str]:
+def find_env_file() -> str | None:
     """
     ディレクトリ検索で.envファイルを探す
 
@@ -68,9 +69,7 @@ def find_env_file() -> Optional[str]:
     return None
 
 
-def extract_entra_ids(
-    env_file_path: str, target_keys: Dict[str, str]
-) -> Dict[str, str]:
+def extract_entra_ids(env_file_path: str, target_keys: dict[str, str]) -> dict[str, str]:
     """
     .envファイルから特定のEntra IDアプリケーションIDを抽出する
 
@@ -84,7 +83,7 @@ def extract_entra_ids(
     app_ids = {}
 
     try:
-        with open(env_file_path, "r", encoding="utf-8") as file:
+        with open(env_file_path, encoding="utf-8") as file:
             for line in file:
                 line = line.strip()
                 if not line or line.startswith("#"):
@@ -102,7 +101,7 @@ def extract_entra_ids(
     return app_ids
 
 
-def get_access_token() -> Optional[str]:
+def get_access_token() -> str | None:
     """
     DefaultAzureCredentialを使用してMicrosoft Graph APIのアクセストークンを取得する
 
@@ -120,7 +119,7 @@ def get_access_token() -> Optional[str]:
 
 def make_graph_request(
     method: str, url: str, access_token: str, success_code: int = 200
-) -> Tuple[bool, Any]:
+) -> tuple[bool, Any]:
     """
     Microsoft Graph APIへのリクエストを行う
 
@@ -142,9 +141,7 @@ def make_graph_request(
     }
 
     try:
-        response = requests.request(
-            method=method.lower(), url=url, headers=headers, timeout=30
-        )
+        response = requests.request(method=method.lower(), url=url, headers=headers, timeout=30)
 
         if response.status_code == success_code:
             try:
@@ -160,7 +157,7 @@ def make_graph_request(
         return False, None
 
 
-def get_object_id_from_app_id(app_id: str, access_token: str) -> Optional[str]:
+def get_object_id_from_app_id(app_id: str, access_token: str) -> str | None:
     """
     アプリケーションIDからオブジェクトIDを取得する
 
@@ -221,7 +218,7 @@ def permanently_delete_entra_id_app(object_id: str, access_token: str) -> bool:
     return success
 
 
-def process_application(app_id: str, access_token: str) -> Optional[str]:
+def process_application(app_id: str, access_token: str) -> str | None:
     """
     アプリケーションを処理する - オブジェクトIDを取得する
 
@@ -243,7 +240,7 @@ def process_application(app_id: str, access_token: str) -> Optional[str]:
     return object_id
 
 
-def delete_applications(app_object_pairs: Dict[str, str], access_token: str) -> None:
+def delete_applications(app_object_pairs: dict[str, str], access_token: str) -> None:
     """
     複数のアプリケーションをまとめて削除する
 
@@ -261,18 +258,14 @@ def delete_applications(app_object_pairs: Dict[str, str], access_token: str) -> 
         print(f"- Application ID: {app_id}, Object ID: {object_id}")
 
     # まとめて確認を求める
-    user_input = input(
-        "\nDeleting these Entra ID Applications, are you want to continue? (y/N) "
-    )
+    user_input = input("\nDeleting these Entra ID Applications, are you want to continue? (y/N) ")
 
     # 'y'または'Y'が入力された場合のみ削除を実行する
     if user_input.lower() == "y":
         for app_id, object_id in app_object_pairs.items():
             print(f"\nDeleting Entra ID application with ID: {app_id}")
             if delete_entra_id_app(object_id, access_token):
-                print(
-                    f"Permanently deleting Entra ID application with object ID: {object_id}"
-                )
+                print(f"Permanently deleting Entra ID application with object ID: {object_id}")
                 permanently_delete_entra_id_app(object_id, access_token)
     else:
         print("Deletion cancelled. No applications were deleted.")

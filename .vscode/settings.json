@@ -1,0 +1,5 @@
+{
+  // ルートに作成される共有仮想環境 .venv を自動検出しやすくする
+  "python.venvPath": "${workspaceFolder}",
+  "python.terminal.activateEnvironment": true
+}
