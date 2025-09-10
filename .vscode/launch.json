@@ -22,7 +22,7 @@
       "env": {
         "APPLICATIONINSIGHTS_CONNECTION_STRING": ""
       },
-      "preLaunchTask": "install-api-dependencies",
+      "preLaunchTask": "install-python-dependencies",
       "console": "integratedTerminal"
     },
     {

@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "install-api-dependencies",
+      "label": "install-python-dependencies",
       "type": "shell",
       "command": "uv",
       "args": ["sync", "--extra", "dev"],
       "options": {
-        "cwd": "${workspaceFolder}/src/api"
+        "cwd": "${workspaceFolder}"
       },
       "presentation": {
         "reveal": "silent",
@@ -15,11 +15,13 @@
       },
       "problemMatcher": []
     },
+    
     {
       "label": "lint-api",
       "type": "shell",
       "command": "uv",
       "args": ["run", "ruff", "check", "."],
+      "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/src/api"
       },
@@ -34,6 +36,7 @@
       "type": "shell",
       "command": "uv",
       "args": ["run", "ruff", "format", "."],
+      "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/src/api"
       },
@@ -57,24 +60,11 @@
       "problemMatcher": []
     },
     {
-      "label": "install-scripts-dependencies",
-      "type": "shell",
-      "command": "uv",
-      "args": ["sync", "--extra", "dev"],
-      "options": {
-        "cwd": "${workspaceFolder}/scripts"
-      },
-      "presentation": {
-        "reveal": "silent",
-        "panel": "shared"
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "lint-scripts",
       "type": "shell",
       "command": "uv",
       "args": ["run", "ruff", "check", "."],
+      "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/scripts"
       },
@@ -89,6 +79,7 @@
       "type": "shell",
       "command": "uv",
       "args": ["run", "ruff", "format", "."],
+      "dependsOn": "install-python-dependencies",
       "options": {
         "cwd": "${workspaceFolder}/scripts"
       },

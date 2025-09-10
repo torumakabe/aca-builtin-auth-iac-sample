@@ -391,7 +391,6 @@ module api 'br/public:avm/res/app/container-app:0.16.0' = {
 
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = containerRegistry.outputs.loginServer
 output AZURE_RESOURCE_API_ID string = api.outputs.resourceId
-output AZURE_RESOURCE_GPT_4O_ID string = '${oaiCogAccount.outputs.resourceId}/deployments/gpt-4o'
 output AZURE_RESOURCE_STATIC_WEB_APP_ID string = frontendStaticSite.outputs.resourceId
 output AZURE_OPENAI_ENDPOINT string = oaiCogAccount.outputs.endpoint
 output AZURE_OPENAI_DEPLOYMENT_NAME string = azureOpenAiDeploymentName

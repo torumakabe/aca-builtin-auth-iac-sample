@@ -124,22 +124,21 @@ export default function Home() {
   );
 
   return (
-    <div className="container">
-      <Head>
-        <title>Simple Chat</title>
-      </Head>
-      <div className="chat-box">
-        <h1 className="title">Simple Chat</h1>
-
-        <MsalAuthenticationTemplate
-          interactionType={InteractionType.Redirect}
-          authenticationRequest={request}
-          loadingComponent={Loading}
-          errorComponent={ErrorView}
-        >
+    <MsalAuthenticationTemplate
+      interactionType={InteractionType.Redirect}
+      authenticationRequest={request}
+      loadingComponent={Loading}
+      errorComponent={ErrorView}
+    >
+      <div className="container">
+        <Head>
+          <title>Simple Chat</title>
+        </Head>
+        <div className="chat-box">
+          <h1 className="title">Simple Chat</h1>
           <ChatComponent />
-        </MsalAuthenticationTemplate>
+        </div>
       </div>
-    </div>
+    </MsalAuthenticationTemplate>
   );
 }

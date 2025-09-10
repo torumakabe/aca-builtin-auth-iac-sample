@@ -20,17 +20,17 @@ hooks:
       shell: sh
       run: |
         # Ensure workspace dependencies for scripts are available
-        uv sync --project ./scripts
-        # Run the cleanup script via uv entrypoint
-        uv run --project ./scripts delete-entra-app
+        uv sync --extra dev
+        # Run the cleanup script directly with Python to avoid missing entrypoint issues
+        uv run --project ./scripts python scripts/delete_app.py
       interactive: true
     windows:
       shell: pwsh
       run: |
         # Ensure workspace dependencies for scripts are available
-        uv sync --project ./scripts
-        # Run the cleanup script via uv entrypoint
-        uv run --project ./scripts delete-entra-app
+        uv sync --extra dev
+        # Run the cleanup script directly with Python to avoid missing entrypoint issues
+        uv run --project ./scripts python scripts/delete_app.py
       interactive: true
 services:
   frontend:
